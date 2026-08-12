@@ -4,7 +4,7 @@ A solution for ranking your coaster credits that accounts for the implicit bias 
 
 Derived from [this repository](https://github.com/coasterrankerburner-gif/Claude-Pairwise-Coaster-Ranker) and made non-Claude centric, this tool lets you import your coaster list (via `.csv`, `.json`, `.md`, or plaintext) and sequentially rank them 1-on-1 to produce an unbiased ranking. Choose to run through your whole list of credits, your top 50, 25, or 10. It's best to include the park name along with the coaster, especially for ambiguously named rides (e.g., Batman, Goliath).  
 
-Live site is here: https://coasterranker.cmyksoda.cc  
+Live site is here: https://coasters.cmyksoda.cc  
 
 ## Self-Hosting
 
