@@ -31,11 +31,11 @@ DB_PATH = os.path.join(CACHE_DIR, "index.db")
 DIST_DIR = os.path.realpath(os.environ.get("DIST_DIR", "dist"))
 
 # source | webp-lossless | webp-q95 | webp-q90 | ...
-IMAGE_FORMAT = os.environ.get("IMAGE_FORMAT", "webp-q95")
+IMAGE_FORMAT = os.environ.get("IMAGE_FORMAT", "webp-q85")
 WEBP_METHOD = int(os.environ.get("WEBP_METHOD", "6"))
-# 0 keeps whatever resolution the source came at. 1600 is ~3x the widest
-# the card ever renders, and ~9x smaller than lossless at full size.
-MAX_WIDTH = int(os.environ.get("MAX_WIDTH", "1600"))
+# 0 keeps whatever resolution the source came at. 1100 covers a 2x display at
+# the widest the card ever renders; 1600 was ~3x that for no visible gain.
+MAX_WIDTH = int(os.environ.get("MAX_WIDTH", "1100"))
 
 # Seconds between outbound requests to any one host. Everyone's imports share
 # this, so a public instance can't machine-gun RCDB from a single IP.

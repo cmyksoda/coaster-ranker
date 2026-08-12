@@ -34,7 +34,7 @@ Each visitor's coaster list and ranking live only in their own browser (localSto
 
 ### Image quality
 
-`IMAGE_FORMAT` and `MAX_WIDTH` control how cached images are stored — the default is `webp-q95` at 1600px, roughly 3x the widest the card ever renders. Originals are kept alongside in `cache/source`, so changing either setting only costs CPU:
+`IMAGE_FORMAT` and `MAX_WIDTH` control how cached images are stored — the default is `webp-q85` at 1100px, enough for a 2x display at the widest the card ever renders, averaging ~140 KB an image. Originals are kept alongside in `cache/source`, so changing either setting only costs CPU:
 
 ```
 docker exec -it coaster-ranker python3 /app/warm_cache.py --reencode
