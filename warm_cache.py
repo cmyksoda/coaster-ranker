@@ -73,6 +73,49 @@ CHAINS = {
         "Busch Gardens Williamsburg",
         ("Sesame Place Philadelphia", "/4710.htm"),
         ("Sesame Place San Diego", "/17798.htm"),
+        ("SeaWorld Abu Dhabi", "/19054.htm"),
+    ],
+    # Merlin runs Legoland and the big British parks; grouped as one operator.
+    "merlin": [
+        "Alton Towers",
+        "Thorpe Park",
+        "Chessington World of Adventures",
+        "Heide Park",
+        "Gardaland",
+        "Legoland Windsor",
+        "Legoland Billund",
+        "Legoland Deutschland",
+        "Legoland California",
+        "Legoland Florida",
+        "Legoland Japan",
+        "Legoland Malaysia",
+        "Legoland New York",
+    ],
+    # Palace Entertainment: several well-known US parks under one owner.
+    "palace": [
+        "Kennywood",
+        "Idlewild",
+        "Lake Compounce",
+        "Dutch Wonderland",
+        "Story Land",
+        "Splish Splash",
+    ],
+    "parques-reunidos": [
+        "Mirabilandia",
+        "Bobbejaanland",
+        "Movie Park Germany",
+        "Parque de Atracciones de Madrid",
+        "Parque Warner Madrid",
+        "Tusenfryd",
+    ],
+    # Compagnie des Alpes -- the Walibi/Parc Asterix group.
+    "cda": [
+        "Parc Asterix",
+        "Walibi Belgium",
+        "Walibi Holland",
+        "Walibi Rhone-Alpes",
+        "Bellewaerde",
+        "Futuroscope",
     ],
     "herschend": [
         "Dollywood",
@@ -106,6 +149,160 @@ CHAINS = {
         ("Hong Kong Disneyland", "/5279.htm"),
         ("Shanghai Disneyland", "/6556.htm"),
     ],
+    # ---- independents -------------------------------------------------------
+    # Grouped by region so a run can be scoped. RCDB names both Florida Fun
+    # Spots plain "Fun Spot America", so those three are pinned by id.
+    "indie-us": [
+        "Knoebels Amusement Resort",
+        # Plain "Holiday World" finds a Canary Islands park first.
+        ("Holiday World", "/4554.htm"),
+        "Lagoon",
+        "Silverwood",
+        "Waldameer",
+        "Lakemont Park",
+        "DelGrosso's Amusement Park",
+        "Conneaut Lake Park",
+        "Indiana Beach",
+        ("Adventureland", "/4676.htm"),          # Farmingdale, NY
+        ("Adventureland Iowa", "/4576.htm"),     # Altoona, IA
+        "Arnolds Park",
+        "Beech Bend",
+        "Santa Cruz Beach Boardwalk",
+        "Belmont Park",
+        "Morey's Piers",
+        "Casino Pier",
+        "Seabreeze",
+        "Canobie Lake Park",
+        "Funtown Splashtown USA",
+        "Palace Playland",
+        "Quassy Amusement Park",
+        "Lake Winnepesaukah",
+        "Camden Park",
+        "Magic Springs",
+        "Elitch Gardens",
+        "Cliff's Amusement Park",
+        # Search finds a same-named Minneapolis park first.
+        ("Wonderland Amusement Park", "/4594.htm"),   # Amarillo, TX
+        "Kemah Boardwalk",
+        ("Nickelodeon Universe", "/4547.htm"),            # Mall of America
+        ("Nickelodeon Universe American Dream", "/15593.htm"),
+        # Home of the Cyclone. Not findable by name -- RCDB's search returns
+        # nothing for "Luna Park" or "Coney Island".
+        ("Luna Park Coney Island", "/9250.htm"),
+        "Deno's Wonder Wheel Amusement Park",
+        "Steel Pier",
+        "Mt. Olympus",
+        "Little Amerricka",
+        "Bay Beach Amusement Park",
+        "Oaks Amusement Park",
+        ("Trimper Rides", "/4603.htm"),
+        ("Martin's Fantasy Island", "/4732.htm"),
+        "Santa's Village",
+        "Keansburg Amusement Park",
+        "Alabama Splash Adventure",
+        # RCDB calls both Florida parks plain "Fun Spot America", so all three
+        # are pinned -- searching by name cannot tell them apart.
+        ("Fun Spot America Kissimmee", "/6373.htm"),
+        ("Fun Spot America Orlando", "/10346.htm"),
+        # Permanently closed; listed for completeness, returns nothing.
+        ("Fun Spot America Atlanta", "/6125.htm"),
+    ],
+    "indie-europe": [
+        "Europa-Park",
+        "Efteling",
+        "Phantasialand",
+        "Liseberg",
+        "PortAventura Park",
+        "Energylandia",
+        "Blackpool Pleasure Beach",
+        "Toverland",
+        "Plopsaland De Panne",
+        "Tripsdrill",
+        "Hansa-Park",
+        "Holiday Park",
+        "Bayern-Park",
+        "Tivoli Gardens",
+        "Bakken",
+        "Djurs Sommerland",
+        "Farup Sommerland",
+        "Grona Lund",
+        "Linnanmaki",
+        "Sarkanniemi",
+        "PowerPark",
+        "Legendia",
+        "Cinecitta World",
+        "Rainbow MagicLand",
+        "Ferrari Land",
+        # Search finds a Venezuelan park of the same name first.
+        ("Isla Magica", "/4867.htm"),
+        "Terra Mitica",
+        "Tibidabo",
+        "Drayton Manor",
+        "Flamingo Land",
+        "Paultons Park",
+        "Oakwood",
+        "Emerald Park",
+        "Pleasurewood Hills",
+        "Fantasy Island",
+        "Nigloland",
+        "Le PAL",
+        "Fraispertuis City",
+        "Duinrell",
+        ("Slagharen Themepark & Resort", "/4842.htm"),
+        ("BonBon-Land", "/5015.htm"),
+        "Wiener Prater",
+        "Familypark",
+        "Sochi Park",
+    ],
+    "indie-asia": [
+        "Fuji-Q Highland",
+        "Nagashima Spa Land",
+        "Yomiuriland",
+        "Hirakata Park",
+        "Tobu Zoo",
+        "Everland",
+        "Lotte World",
+        "Gyeongju World",
+        "E-World",
+        "Chimelong Paradise",
+        # RCDB calls all six plain "Happy Valley"; only the id separates them.
+        ("Happy Valley Beijing", "/5689.htm"),
+        ("Happy Valley Shanghai", "/6259.htm"),
+        ("Happy Valley Shenzhen", "/5166.htm"),
+        ("Happy Valley Chengdu", "/6253.htm"),
+        ("Happy Valley Wuhan", "/9221.htm"),
+        ("Happy Valley Tianjin", "/10352.htm"),
+        "Ocean Park",
+        ("Sunac Land Chengdu", "/14946.htm"),
+        "Ferrari World Abu Dhabi",
+        "Warner Bros. World Abu Dhabi",
+        "IMG Worlds of Adventure",
+        ("Motiongate", "/13813.htm"),
+        "Siam Park City",
+        "Dream World",
+        "Genting SkyWorlds",
+        "Vinpearl Land",
+    ],
+    "indie-latam": [
+        "Parque del Cafe",
+        "Beto Carrero World",
+        "Hopi Hari",
+        "Fantasilandia",
+        "Parque de la Costa",
+        "Selva Magica",
+        "Mundo Petapa",
+        ("Mundo Aventura", "/5047.htm"),
+    ],
+    "indie-oceania": [
+        # Both would otherwise match a same-named park abroad: "Dreamworld"
+        # finds Thailand's Dream World, "Adventure World" finds Six Flags America.
+        ("Dreamworld", "/4938.htm"),
+        ("Adventure World", "/4937.htm"),
+        "Warner Bros. Movie World",
+        "Sea World",
+        "Rainbow's End",
+        "Gold Reef City",
+    ],
 }
 
 
@@ -122,8 +319,10 @@ def park_listing(park_name, pinned=None):
         pid = pinned
         # Seed the resolver cache so a visitor importing this park by name
         # lands on the same page instead of re-running the flaky search.
+        # Keyed the same way resolve_park_id reads it back -- _norm alone skips
+        # PARK_ALIASES, so pinned aliased parks were written where nothing looked.
         b.db_write("INSERT OR REPLACE INTO parks VALUES (?,?,?)",
-                   (b._norm(park_name), pid, int(time.time())))
+                   (b.canonical_park(park_name), pid, int(time.time())))
     else:
         pid = b.resolve_park_id(park_name)
     if not pid:
@@ -138,8 +337,10 @@ def park_listing(park_name, pinned=None):
     m = re.search(r'href="?%s"?>([^<]+)</a>' % re.escape(pid), html)
     if m:
         rcdb_name = m.group(1)
-    rows = re.findall(r'<td><a href="?(/\d+\.htm)"?>([^<]+)</a>', html)
-    return rcdb_name, rows
+    # No unfiltered retry on an empty result -- see park_coasters. A closed park
+    # legitimately has nothing operating, and warming its removed rides would
+    # put coasters nobody can ride into everyone's import.
+    return rcdb_name, b.parse_listing(html)
 
 
 def already_cached(name, park):
@@ -360,7 +561,7 @@ def warm_park(park_name, pinned=None, dry_run=False, limit=None, refresh=False):
     print(f"  {label}: {len(rows)} operating coasters")
 
     got = missed = skipped = 0
-    for _path, cname in rows:
+    for path, cname in rows:
         if refresh:
             forget(cname, park_name)
         elif already_cached(cname, park_name):
@@ -370,7 +571,9 @@ def warm_park(park_name, pinned=None, dry_run=False, limit=None, refresh=False):
             print(f"    would fetch: {cname}")
             continue
         try:
-            url, ctype = b.resolve_coaster(cname, park_name)
+            # The listing already told us this ride's page, so hand it straight
+            # over rather than searching a name that other parks share too.
+            url, ctype = b.resolve_coaster(cname, park_name, known_path=path)
         except Exception as e:
             print(f"    ! {cname}: {e}")
             missed += 1

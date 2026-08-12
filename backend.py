@@ -343,15 +343,45 @@ def resolve_park_id(park_name):
     return found
 
 
-def park_coasters(park_name):
-    """Every operating roller coaster at a park, via RCDB's own filtered listing."""
-    pid = resolve_park_id(park_name)
+# Status values that mean "not a ride a visitor can queue for today".
+_DEFUNCT = ("removed", "relocated", "defunct", "sbno", "standing", "demolish")
+
+
+def parse_listing(html):
+    """[(path, name), ...] from an RCDB r.htm table, minus the defunct rows.
+
+    Row shape is: camera | name | type | design | status | opened.
+    """
+    body = re.search(r"<tbody>(.*?)</tbody>", html, re.S)
+    if not body:
+        return []
+    out = []
+    for chunk in body.group(1).split("<tr>"):
+        m = re.search(r'<td><a href="?(/\d+\.htm)"?>([^<]+)</a>', chunk)
+        if not m:
+            continue
+        cells = chunk.split("<td")
+        status = ""
+        if len(cells) > 5:
+            status = re.sub(r"<[^>]+>", "", cells[5]).strip().lower()
+        if any(d in status for d in _DEFUNCT):
+            continue
+        out.append((m.group(1), m.group(2)))
+    return out
+
+
+def park_coasters(park_name, pid=None):
+    """Every rideable roller coaster at a park, via RCDB's own listing."""
+    pid = pid or resolve_park_id(park_name)
     if not pid:
         return []
     park_num = re.sub(r"\D", "", pid)
     try:
-        html = _get_text(f"{RCDB}/r.htm?ot=2&st=93&pk={park_num}")
-        return re.findall(r'<td><a href="?(/\d+\.htm)"?>([^<]+)</a>', html)
+        # Deliberately no "retry unfiltered if this is empty": an empty result
+        # means the park has nothing operating, which is the right answer for a
+        # closed park. Falling back would resurrect its dead rides -- Fun Spot
+        # Atlanta's blank statuses are it having closed, not a data gap.
+        return parse_listing(_get_text(f"{RCDB}/r.htm?ot=2&st=93&pk={park_num}"))
     except Exception:
         return []
 
@@ -610,8 +640,13 @@ def _qkey(name, park):
     return f"{_norm(name)}|{canonical_park(park)}"
 
 
-def resolve_coaster(name, park, fallback_type=""):
-    """(image_url, type). Hits the network only on a cache miss."""
+def resolve_coaster(name, park, fallback_type="", known_path=None):
+    """(image_url, type). Hits the network only on a cache miss.
+
+    known_path skips the name search entirely. Warming from a park's own RCDB
+    listing already knows each ride's page, and trusting it is both cheaper and
+    safer than searching a name that a dozen other parks also use.
+    """
     qkey = _qkey(name, park)
 
     rows = db_query("SELECT ckey, ctype FROM lookup WHERE qkey=?", (qkey,))
@@ -641,9 +676,12 @@ def resolve_coaster(name, park, fallback_type=""):
 
             rejected = {r[0] for r in db_query("SELECT src FROM rejects")}
 
-            q = re.sub(r"^\s*the\s+", "", name, flags=re.I)
-            q = re.sub(r"\s+the\s*$", "", q, flags=re.I) or name
-            rcdb_path = find_image_path(q, park)
+            if known_path:
+                rcdb_path = known_path
+            else:
+                q = re.sub(r"^\s*the\s+", "", name, flags=re.I)
+                q = re.sub(r"\s+the\s*$", "", q, flags=re.I) or name
+                rcdb_path = find_image_path(q, park)
 
             if rcdb_path:
                 try:

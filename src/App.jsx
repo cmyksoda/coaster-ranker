@@ -646,8 +646,11 @@ function SetupView({ onReady }) {
           let park = '';
           let type = '';
           
-          // Match "Rank. Name (Type) — Park" or "Name (Type) - Park"
-          const match = l.match(/^(?:\d+\.\s*)?(.+?)(?:\s*\((.*?)\))?\s*(?:[-—]\s*(.*))?$/);
+          // Match "Rank. Name (Type) — Park" or "Name (Type) - Park".
+          // The separating dash must have whitespace on both sides: plenty of
+          // rides have a hyphen in the name itself ("Centi-Speed"), and a bare
+          // [-] split those into a nonsense name and park. En-dash counts too.
+          const match = l.match(/^(?:\d+\.\s*)?(.+?)(?:\s*\((.*?)\))?(?:\s+[-–—]\s+(.*))?$/);
           if (match && (match[2] || match[3])) {
             name = match[1].trim();
             type = match[2] ? match[2].trim() : '';
