@@ -9,8 +9,10 @@ services:
       # Warmed images live here, so rebuilding the image never re-downloads anything from RCDB.
       - ./cache:/app/cache
     environment:
-      IMAGE_FORMAT: webp-q95
-      MAX_WIDTH: "1600"
+      # The card renders at most ~550 CSS px, so 1100 covers a 2x display with
+      # room to spare. At q95/1600 the average image was 450KB; this is ~146KB.
+      IMAGE_FORMAT: webp-q85
+      MAX_WIDTH: "1100"
       MIN_INTERVAL: "0.34"
       # Set to your tunnel origin (e.g. https://coasters.example.com) to stop other sites driving this API from their visitors' browsers.
       ALLOWED_ORIGINS: "*"
