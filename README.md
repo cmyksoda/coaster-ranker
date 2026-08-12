@@ -22,7 +22,7 @@ docker exec -it coaster-ranker python3 /app/warm_cache.py --list
 docker exec -it coaster-ranker python3 /app/warm_cache.py --all
 ```
 
-`--all` covers Cedar Fair, Six Flags, SeaWorld/Busch Gardens, Herschend, Hersheypark, Universal, Disney, Merlin, Palace, Parques Reunidos and Compagnie des Alpes, plus a bunch more  well-known independents worldwide — 219 parks, around 1,200 coasters and ~200 MB — and takes an hour or so. Images land in `./cache`, mounted as a volume, so rebuilding the container never re-downloads anything.
+`--all` covers Cedar Fair, Six Flags, SeaWorld/Busch Gardens, Herschend, Hersheypark, Universal, Disney, Merlin, Palace, Parques Reunidos and Compagnie des Alpes, plus a bunch more  well-known independents worldwide — 219 parks, around 1,200 coasters and ~210 MB — and takes about 40 minutes. Images land in `./cache`, mounted as a volume, so rebuilding the container never re-downloads anything.
 
 **Please be kind to RCDB.** `MIN_INTERVAL` (default `0.34`) is the minimum gap in seconds between outbound requests, and every visitor's imports share it.
 

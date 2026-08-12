@@ -217,7 +217,8 @@ CHAINS = {
         "Blackpool Pleasure Beach",
         "Toverland",
         "Plopsaland De Panne",
-        "Tripsdrill",
+        # RCDB files it under its full name; "Tripsdrill" alone finds nothing.
+        ("Erlebnispark Tripsdrill", "/4886.htm"),
         "Hansa-Park",
         "Holiday Park",
         "Bayern-Park",
