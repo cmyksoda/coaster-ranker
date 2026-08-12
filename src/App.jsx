@@ -837,6 +837,8 @@ function CoasterImage({ coaster, onUpdate }) {
         src={coaster.image}
         alt={coaster.name}
         className="cr-img"
+        loading="lazy"
+        decoding="async"
         onError={() => setFailed(true)}
       />
     </div>

@@ -260,13 +260,16 @@ def extract_type(coaster_html):
     return res if res else "Unknown"
 
 
-def _norm(s):
-    # Fold accents rather than dropping them: without this "Último" became
-    # "ltimo" and "México" became "mxico", so anyone typing the unaccented
-    # spelling missed the cache entirely.
+def _fold(s):
+    # Accents folded rather than dropped: without this "Último" became "ltimo"
+    # and "México" became "mxico", so anyone typing the unaccented spelling
+    # missed the cache entirely. Word breaks survive, for tokenising.
     folded = unicodedata.normalize("NFKD", (s or "").lower())
-    folded = "".join(c for c in folded if not unicodedata.combining(c))
-    return re.sub(r"[^a-z0-9]", "", folded)
+    return "".join(c for c in folded if not unicodedata.combining(c))
+
+
+def _norm(s):
+    return re.sub(r"[^a-z0-9]", "", _fold(s))
 
 
 # Visitors type the park name they know; the warm cache is keyed by RCDB's
@@ -353,35 +356,69 @@ def park_coasters(park_name):
         return []
 
 
-def park_matches(candidate_text, park):
+# Words that say nothing about *which* park is meant, so they must not prop up
+# a match on their own ("... Park", "... Resort").
+_PARK_NOISE = {"park", "parks", "resort", "resorts", "theme", "amusement", "gardens"}
+
+
+def _park_tokens(text):
+    return {w for w in re.split(r"[^a-z0-9]+", _fold(text))
+            if len(w) > 3 and w not in _PARK_NOISE}
+
+
+def park_score(candidate_text, park):
+    """How well an RCDB result's park matches the requested one.
+
+    None means "definitely a different park"; otherwise higher is better. This
+    is scored rather than boolean because same-named rides are everywhere: a
+    plain substring test let "Disneyland" match Tokyo, Hong Kong, Shanghai and
+    Paris, and first-match-wins then took whichever RCDB happened to list first.
+    """
     if not (park or "").strip():
-        return True
-    c = _norm(candidate_text)
-    p = _norm(park)
-    if p and p in c:
-        return True
-    # Every significant word must appear, not just the first. Checking only the
-    # first made "Kings Dominion" and "Kings Island" match each other on
-    # "kings", so the two parks shared photos for their same-named rides.
-    words = [w for w in re.split(r"[^a-z0-9]+", park.lower()) if len(w) > 3]
-    if not words:
-        return False
-    return all(_norm(w) in c for w in words)
+        return 0
+    want = _park_tokens(park)
+    have = _park_tokens(candidate_text)
+    if not want:
+        return 0
+    overlap = want & have
+    if not overlap:
+        return None
+    missing = want - have
+    extra = have - want
+    # A candidate may be *less* specific than what was typed -- RCDB calls the
+    # Kissimmee park plain "Fun Spot America" -- but it must not bring its own
+    # competing name words. That distinction is what keeps "Kings Dominion"
+    # from matching "Kings Island" while still allowing the Fun Spot case.
+    if missing and extra:
+        return None
+    return 10 * len(overlap) - 3 * len(extra) - 2 * len(missing)
+
+
+def park_matches(candidate_text, park):
+    return park_score(candidate_text, park) is not None
+
+
+def _best_by_park(candidates, park):
+    """candidates: [(path, text), ...] -> the path whose park fits best."""
+    best, best_score = None, None
+    for path, text in candidates:
+        s = park_score(text, park)
+        if s is None:
+            continue
+        if best_score is None or s > best_score:
+            best, best_score = path, s
+    return best
 
 
 def pick_from_instant(results, park):
     real = [r for r in results if not (r.get("l") or "").startswith("qs.htm")]
-    for r in real:
-        if park_matches((r.get("s") or "") + " " + (r.get("t") or ""), park):
-            return r["l"]
-    return None
+    return _best_by_park(
+        [(r["l"], (r.get("s") or "") + " " + (r.get("t") or "")) for r in real if r.get("l")],
+        park)
 
 
 def pick_from_full(rows, park):
-    for path, name, rpark in rows:
-        if park_matches(rpark, park):
-            return path
-    return None
+    return _best_by_park([(path, rpark) for path, _name, rpark in rows], park)
 
 
 def pick_from_park_page(name, park):
@@ -412,7 +449,13 @@ def find_image_path(name, park):
     if path:
         return path
     if park:
-        return find_image_path(name, "")
+        # Last resort, and only when the name is globally unambiguous. Blindly
+        # retrying without the park used to take whatever RCDB listed first:
+        # "Hurricane" exists at ~20 parks, so Fun Spot America's got the photo
+        # and manufacturer of a Meisho ride at Sendai Highland, Japan.
+        paths = {p for p, _n, _pk in rcdb_full_results(_norm(name))}
+        if len(paths) == 1:
+            return paths.pop()
     return None
 
 
