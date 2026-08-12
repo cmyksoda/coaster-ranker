@@ -40,4 +40,5 @@ Each visitor's coaster list and ranking live only in their own browser (localSto
 docker exec -it coaster-ranker python3 /app/warm_cache.py --reencode
 ```
 
-Coaster data and photography come from [RCDB](https://rcdb.com), with Coasterpedia and Wikipedia as fallbacks.
+Coaster data and photography come from [RCDB](https://rcdb.com), with Coasterpedia and Wikipedia as fallbacks.  
+Color schemes are [Catppuccin](https://github.com/catppuccin) Latte (Light) and Mocha (Dark).
