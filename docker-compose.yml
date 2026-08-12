@@ -1,0 +1,16 @@
+services:
+  coaster-ranker:
+    image: cmyksoda/coaster-ranker:latest
+    container_name: coaster-ranker
+    ports:
+      - "8192:8192"
+    restart: unless-stopped
+    volumes:
+      # Warmed images live here, so rebuilding the image never re-downloads anything from RCDB.
+      - ./cache:/app/cache
+    environment:
+      IMAGE_FORMAT: webp-q95
+      MAX_WIDTH: "1600"
+      MIN_INTERVAL: "0.34"
+      # Set to your tunnel origin (e.g. https://coasters.example.com) to stop other sites driving this API from their visitors' browsers.
+      ALLOWED_ORIGINS: "*"
